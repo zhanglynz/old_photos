@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Family Photo Album</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .slideshow-container {
+      max-width: 800px;
+      margin: 30px auto;
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .slide {
+      display: none;
+    }
+
+    .slide img {
+      width: 100%;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Family Photo Album</h1>
+
+<div class="slideshow-container" id="slideshow"></div>
+
+<script>
+let slideIndex = 0;
+let slides = [];
+const photoFolder = "photos";
+
+fetch("photos.json")
+  .then(response => response.json())
+  .then(files => {
+    const slideshow = document.getElementById("slideshow");
+
+    files.forEach(file => {
+      const div = document.createElement("div");
+      div.className = "slide";
+
+      const img = document.createElement("img");
+      img.src = photoFolder + "/" + file;
+
+      div.appendChild(img);
+      slideshow.appendChild(div);
+    });
+
+    slides = document.getElementsByClassName("slide");
+    showSlides();
+  });
+
+function showSlides() {
+  for (let i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  slideIndex++;
+  if (slideIndex > slides.length) slideIndex = 1;
+  slides[slideIndex - 1].style.display = "block";
+  setTimeout(showSlides, 3000);
+}
+</script>
+
+</body>
+</html>
